@@ -5,8 +5,12 @@ import com.deomani.babarchirestro.entity.Customer;
 import com.deomani.babarchirestro.mapper.CustomerMapper;
 import com.deomani.babarchirestro.repo.CustomerRepo;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.deomani.babarchirestro.dto.LoginRequest;
+import com.deomani.babarchirestro.helper.JWTHelper;
+import static java.lang.String.format;
+import com.deomani.babarchirestro.helper.EncryptionService;
 
 import java.util.Optional;
 
@@ -18,19 +22,31 @@ public class CustomerService {
 
     private final CustomerRepo repo;
     private final CustomerMapper mapper;
+    private final PasswordEncoder passwordEncoder;
+    private final EncryptionService encryptionService;
+    private final JWTHelper jwtHelper;
     public String createCustomer(CustomerRequest request) {
         Customer customer = mapper.toEntity(request);
+        customer.setPassword(passwordEncoder.encode(customer.getPassword()));
         repo.save(customer);
-        return "Created";
+        return "Customer Created Successfully";
     }
-    public boolean loginCustomerWithoutEncryption(LoginRequest request) {
+
+    public Customer getCustomer(String email) {
+        return repo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException(
+                        format("Cannot update Customer:: No customer found with the provided ID:: %s", email)
+                ));
+    }
+
+    public String login(LoginRequest request) {
         // Use Optional<Customer> to correctly handle potential null values
-        Optional<Customer> optionalCustomer = repo.findByEmail(request.email());
-        if (optionalCustomer.isPresent()) {
-            Customer customer = optionalCustomer.get(); // Extract the customer from the Optional
-            return customer.getPassword().equals(request.password());
+        Customer customer = getCustomer(request.email());
+        if(!encryptionService.validates(request.password(), customer.getPassword())) {
+            return "Wrong Password or Email";
         }
-        return false;
+
+        return jwtHelper.generateToken(request.email());
     }
 
 
