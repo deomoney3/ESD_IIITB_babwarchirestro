@@ -19,4 +19,9 @@ public class CustomerController {
     public ResponseEntity<String> createCustomer(@RequestBody @Valid CustomerRequest request) {
         return ResponseEntity.ok(customerService.createCustomer(request));
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<String> updateCustomer(@RequestBody CustomerRequest request) {
+        return ResponseEntity.ok(customerService.updateCustomer(request));
+    }
 }

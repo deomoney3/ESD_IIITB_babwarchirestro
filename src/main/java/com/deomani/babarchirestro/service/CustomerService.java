@@ -39,6 +39,7 @@ public class CustomerService {
                 ));
     }
 
+
     public String login(LoginRequest request) {
         // Use Optional<Customer> to correctly handle potential null values
         Customer customer = getCustomer(request.email());
@@ -49,5 +50,24 @@ public class CustomerService {
         return jwtHelper.generateToken(request.email());
     }
 
+
+    public String updateCustomer(CustomerRequest request) {
+        Customer existingCustomer = repo.findByEmail(request.email()).orElseThrow(() ->
+                new RuntimeException("Customer not found with email: " + request.email())
+        );
+
+        existingCustomer.setFirstName(request.firstName() != null ? request.firstName() : existingCustomer.getFirstName());
+        existingCustomer.setLastName(request.lastName() != null ? request.lastName() : existingCustomer.getLastName());
+        existingCustomer.setPassword(request.password() != null ? request.password() : existingCustomer.getPassword());
+        existingCustomer.setAddress(request.address() != null ? request.address() : existingCustomer.getAddress());
+        existingCustomer.setCity(request.city() != null ? request.city() : existingCustomer.getCity());
+        existingCustomer.setPincode(request.pincode() != null ? request.pincode() : existingCustomer.getPincode());
+        if (request.password() != null) {
+            existingCustomer.setPassword(passwordEncoder.encode(request.password())); // Re-encode the password if it is updated
+        }
+
+        repo.save(existingCustomer);
+        return "Customer updated successfully.";
+    }
 
 }

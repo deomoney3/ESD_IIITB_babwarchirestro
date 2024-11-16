@@ -40,7 +40,7 @@ public record CustomerRequest(
         @NotNull(message = "Password should be present")
         @NotEmpty(message = "Password should be present")
         @NotBlank(message = "Password should be present")
-        @Size(min = 6, max = 6)
+        @Size(min=6,max=6)
         @JsonProperty("pincode")
         String pincode
 ) {
