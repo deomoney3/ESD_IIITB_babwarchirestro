@@ -29,13 +29,13 @@ public record CustomerRequest(
         @NotEmpty(message = "Password should be present")
         @NotBlank(message = "Password should be present")
         @JsonProperty("address")
-                String address,
+        String address,
 
         @NotNull(message = "Password should be present")
         @NotEmpty(message = "Password should be present")
         @NotBlank(message = "Password should be present")
         @JsonProperty("city")
-                String city,
+        String city,
 
         @NotNull(message = "Password should be present")
         @NotEmpty(message = "Password should be present")

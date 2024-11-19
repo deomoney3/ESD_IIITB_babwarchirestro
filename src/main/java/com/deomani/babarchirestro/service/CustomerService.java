@@ -1,6 +1,7 @@
 package com.deomani.babarchirestro.service;
 
 import com.deomani.babarchirestro.dto.CustomerRequest;
+import com.deomani.babarchirestro.dto.CustomerResponse;
 import com.deomani.babarchirestro.entity.Customer;
 import com.deomani.babarchirestro.mapper.CustomerMapper;
 import com.deomani.babarchirestro.repo.CustomerRepo;
@@ -69,5 +70,9 @@ public class CustomerService {
         repo.save(existingCustomer);
         return "Customer updated successfully.";
     }
-
+    public CustomerResponse getCustomerByEmail(String email) {
+        Customer customer = repo.findByEmail(email).orElseThrow(() ->
+                new RuntimeException("Customer not found with email: " + email));
+        return mapper.toCustomerResponse(customer);
+    }
 }
