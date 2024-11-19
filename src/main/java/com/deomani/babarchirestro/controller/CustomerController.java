@@ -51,4 +51,17 @@ public class CustomerController {
         }
     }
 
+    @DeleteMapping("/delete/{email}")
+    public ResponseEntity<String> deleteCustomer(
+            @RequestHeader("Authorization") String token, // Accept token from header
+            @PathVariable String email) {
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+        // Validate that the email in the path matches the email in the token
+        validateTokenForEmail(token, email);
+        customerService.deleteCustomerByEmail(email);
+        return ResponseEntity.ok("Customer deleted successfully.");
+    }
+
 }

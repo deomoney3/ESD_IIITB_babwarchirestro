@@ -75,4 +75,11 @@ public class CustomerService {
                 new RuntimeException("Customer not found with email: " + email));
         return mapper.toCustomerResponse(customer);
     }
+
+    public void deleteCustomerByEmail(String email) {
+        Customer customer = repo.findByEmail(email).orElseThrow(() ->
+                new RuntimeException("Customer not found with email: " + email)
+        );
+        repo.delete(customer);
+    }
 }
