@@ -52,4 +52,8 @@ public class ProductService {
     public void deleteProductById(Long id) {
         productRepo.deleteById(id);
     }
+
+    public List<Product> getTop2ProductsInRange(Double minPrice, Double maxPrice) {
+        return productRepo.findTop2ByPriceBetweenOrderByPrice(minPrice, maxPrice);
+    }
 }
