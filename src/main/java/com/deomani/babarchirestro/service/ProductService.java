@@ -9,7 +9,10 @@ import com.deomani.babarchirestro.mapper.ProductMapper;
 import com.deomani.babarchirestro.repo.ProductRepo;
 import lombok.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 
 @Service
@@ -34,6 +37,8 @@ public class ProductService {
         return productRepo.save(product);
     }
 
-
+    public List<Product> fetchProduct() {
+        return productRepo.findAll();
+    }
 
 }

@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @RequiredArgsConstructor
 @RestController
@@ -23,6 +25,11 @@ public class ProductController {
     @PutMapping("/{name}")
     public ResponseEntity<Product> updateProduct(@RequestBody ProductRequest request,@PathVariable String name) {
         return ResponseEntity.ok(productService.updateProduct(request,name));
+    }
+
+    @GetMapping()
+    public ResponseEntity<List<Product>> fetchProduct(){
+        return ResponseEntity.ok(productService.fetchProduct());
     }
 
 }
