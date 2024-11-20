@@ -48,4 +48,8 @@ public class ProductService {
                 .orElseThrow(() -> new RuntimeException("Product not found"));
         return productMapper.toProductResponse(product);
     }
+
+    public void deleteProductById(Long id) {
+        productRepo.deleteById(id);
+    }
 }
