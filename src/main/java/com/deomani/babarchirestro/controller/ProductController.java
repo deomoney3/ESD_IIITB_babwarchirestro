@@ -2,6 +2,7 @@ package com.deomani.babarchirestro.controller;
 
 import com.deomani.babarchirestro.dto.CustomerRequest;
 import com.deomani.babarchirestro.dto.ProductRequest;
+import com.deomani.babarchirestro.dto.ProductResponse;
 import com.deomani.babarchirestro.entity.Product;
 import com.deomani.babarchirestro.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -32,4 +33,11 @@ public class ProductController {
         return ResponseEntity.ok(productService.fetchProduct());
     }
 
+    @GetMapping("/{name}")
+    public ResponseEntity<ProductResponse> getProductByName(@PathVariable String name) {
+
+        ProductResponse product = productService.getProductByName(name);
+
+        return ResponseEntity.ok(product);
+    }
 }

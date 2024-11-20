@@ -3,6 +3,7 @@ package com.deomani.babarchirestro.service;
 import com.deomani.babarchirestro.dto.CustomerRequest;
 import com.deomani.babarchirestro.dto.LoginRequest;
 import com.deomani.babarchirestro.dto.ProductRequest;
+import com.deomani.babarchirestro.dto.ProductResponse;
 import com.deomani.babarchirestro.entity.Customer;
 import com.deomani.babarchirestro.entity.Product;
 import com.deomani.babarchirestro.mapper.ProductMapper;
@@ -21,6 +22,7 @@ import java.util.List;
 public class ProductService {
     private final ProductRepo productRepo;
     private final ProductMapper productMapper;
+
     public String createProduct(ProductRequest request) {
         Product product = productMapper.toEntity(request);
         productRepo.save(product);
@@ -41,4 +43,9 @@ public class ProductService {
         return productRepo.findAll();
     }
 
+    public ProductResponse getProductByName(String name) {
+        Product product = productRepo.findByName(name)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+        return productMapper.toProductResponse(product);
+    }
 }
